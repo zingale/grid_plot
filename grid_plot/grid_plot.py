@@ -2,9 +2,10 @@
 # finite-volume and finite-difference grids in 1- and 2-d.
 
 import math
-import numpy as np
-import matplotlib.pyplot as plt
+
 import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Use LaTeX for rendering
 mpl.rcParams["text.usetex"] = True
@@ -24,6 +25,7 @@ mpl.rcParams['legend.fontsize'] = 'large'
 mpl.rcParams['figure.titlesize'] = 'medium'
 
 import sys
+
 
 class FDGrid:
     """ a 1-d finite-difference grid """
@@ -366,7 +368,8 @@ class PiecewiseConstant:
 
         # scale is used for plotting only -- it is the normalization
         # factor for a
-        if scale <= 0.0: scale = 1.0
+        if scale <= 0.0:
+            scale = 1.0
 
         self.scale = scale
 
@@ -412,9 +415,9 @@ class PiecewiseLinear(PiecewiseConstant):
             if not self.nolimit:
                 if test > 0.0:
                     self.slope[n] = min(math.fabs(da),
-                                        min(2.0*math.fabs(self.a[n+1] - self.a[n]),
-                                            2.0*math.fabs(self.a[n] - self.a[n-1]))) * \
-                                            np.sign(self.a[n+1] - self.a[n-1])
+                                        2.0*math.fabs(self.a[n+1] - self.a[n]),
+                                        2.0*math.fabs(self.a[n] - self.a[n-1])) * \
+                                    np.sign(self.a[n+1] - self.a[n-1])
                 else:
                     self.slope[n] = 0.0
             else:
@@ -514,17 +517,17 @@ class PiecewiseParabolic(PiecewiseConstant):
             if not nolimit:
 
                 if (self.a[n+1] - self.a[n])*(self.a[n] - self.a[n-1]) > 0.0:
-                    da0 = np.sign(da0)*min(math.fabs(da0),
-                                           min(2.0*math.fabs(self.a[n] - self.a[n-1]),
-                                               2.0*math.fabs(self.a[n+1] - self.a[n])) )
+                    da0 = np.sign(da0) * min(math.fabs(da0),
+                                             2.0*math.fabs(self.a[n] - self.a[n-1]),
+                                             2.0*math.fabs(self.a[n+1] - self.a[n]))
                 else:
                     da0 = 0.0
 
 
                 if (self.a[n+2] - self.a[n+1])*(self.a[n+1] - self.a[n]) > 0.0:
-                    dap = np.sign(dap)*min(math.fabs(dap),
-                                           min(2.0*math.fabs(self.a[n+1] - self.a[n]),
-                                               2.0*math.fabs(self.a[n+2] - self.a[n+1])) )
+                    dap = np.sign(dap) * min(math.fabs(dap),
+                                             2.0*math.fabs(self.a[n+1] - self.a[n]),
+                                             2.0*math.fabs(self.a[n+2] - self.a[n+1]))
                 else:
                     dap = 0.0
 
